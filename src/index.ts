@@ -1,10 +1,13 @@
 import express from "express";
+import envVars from "./config";
 
 const app = express();
 
+const serverPort = envVars.PORT;
+
 async function startServer() {
-  app.listen(3000, () => {
-    console.log("Server is running on port 3000");
+  app.listen(serverPort, () => {
+    console.log(`🚀 Server is running on port ${serverPort}`);
   });
 }
 
