@@ -4,7 +4,7 @@ import { AuthService } from "../services/AuthService";
 
 const router = express.Router();
 
-const authRouter = (app: Express, passport: PassportStatic) => {
+export const authRouter = (app: Express, passport: PassportStatic) => {
   app.use("/api/auth", router);
 
   // Registration Endpoint

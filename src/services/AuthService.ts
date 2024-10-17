@@ -12,7 +12,7 @@ export const AuthService = {
         },
       });
       if (user) {
-        throw createError(409, "User already exists");
+        throw createError(409, "Email is already taken!");
       }
       return await prisma.user.create(data);
     } catch (err: any) {
