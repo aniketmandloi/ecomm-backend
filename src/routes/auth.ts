@@ -20,4 +20,19 @@ export const authRouter = (app: Express, passport: PassportStatic) => {
       }
     }
   );
+
+  // Login Endpoint
+  router.post(
+    "/login",
+    passport.authenticate("local"),
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const { username, password } = req.body;
+        const response = await AuthService.login({ username, password });
+        res.status(200).send(response);
+      } catch (err) {
+        next(err);
+      }
+    }
+  );
 };
