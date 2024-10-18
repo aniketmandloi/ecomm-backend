@@ -12,5 +12,12 @@ export const loaders = async (app: Express) => {
   const passport = await passportLoader(expressApp);
 
   // Load API route handlers
-  routeLoader(app, passport);
+  await routeLoader(app, passport);
+
+  // Error Handler
+  app.use((err: any, req: any, res: any, next: any) => {
+    const { message, status } = err;
+
+    return res.status(status).send({ message });
+  });
 };

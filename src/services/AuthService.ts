@@ -1,10 +1,11 @@
 import createError from "http-errors";
 import { PrismaClient } from "@prisma/client";
+import passport from "passport";
 const prisma = new PrismaClient();
 
 export const AuthService = {
   async register(data: any) {
-    const { email } = data;
+    const { email, password } = data;
 
     try {
       const user = await prisma.user.findUnique({
@@ -15,7 +16,12 @@ export const AuthService = {
       if (user) {
         throw createError(409, "Email is already taken!");
       }
-      return await prisma.user.create(data);
+      return await prisma.user.create({
+        data: {
+          email,
+          password,
+        },
+      });
     } catch (err: any) {
       throw createError(500, err.message);
     }
