@@ -4,7 +4,7 @@ import { loaders } from "./loaders";
 
 const app = express();
 
-const serverPort = envVars.PORT;
+const serverPort = parseInt(envVars.PORT);
 
 async function startServer() {
   // Init application loaders

@@ -1,7 +1,10 @@
 import createError from "http-errors";
+import bcrypt from "bcrypt";
 import { PrismaClient } from "@prisma/client";
-import passport from "passport";
+import envVars from "../config";
 const prisma = new PrismaClient();
+
+const saltRounds = parseInt(envVars.SALT_ROUNDS);
 
 export const AuthService = {
   async register(data: any) {
@@ -16,10 +19,15 @@ export const AuthService = {
       if (user) {
         throw createError(409, "Email is already taken!");
       }
+
+      // Use bcrypt to hash password and store it
+      const salt = await bcrypt.genSalt(saltRounds);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
       return await prisma.user.create({
         data: {
           email,
-          password,
+          password: hashedPassword,
         },
       });
     } catch (err: any) {
@@ -42,7 +50,9 @@ export const AuthService = {
         throw createError(401, "Incorrect username or password!");
       }
 
-      if (user.password !== password) {
+      // Use bcrypt to compare password
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
         throw createError(401, "Incorrect username or password!");
       }
 
