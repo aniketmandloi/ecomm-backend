@@ -1,13 +1,14 @@
 import createError from "http-errors";
 import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import envVars from "../config";
+
 const prisma = new PrismaClient();
 
 const saltRounds = parseInt(envVars.SALT_ROUNDS);
 
 export const AuthService = {
-  async register(data: any) {
+  async register(data: any): Promise<any> {
     const { email, password } = data;
 
     try {
@@ -35,7 +36,7 @@ export const AuthService = {
     }
   },
 
-  async login(data: any) {
+  async login(data: any): Promise<User> {
     const { email, password } = data;
 
     try {
