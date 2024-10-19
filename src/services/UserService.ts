@@ -1,7 +1,6 @@
 import createError from "http-errors";
-import { PrismaClient, User } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { User } from "@prisma/client";
+import prisma from "../prisma";
 
 interface UpdateUserData {
   id: number;

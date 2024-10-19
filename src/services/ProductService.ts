@@ -1,7 +1,6 @@
 import createError from "http-errors";
-import { PrismaClient, Product } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { Product } from "@prisma/client";
+import prisma from "../prisma";
 
 export const ProductService = {
   async list(options: any): Promise<Product[]> {

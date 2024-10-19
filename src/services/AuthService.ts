@@ -1,9 +1,8 @@
 import createError from "http-errors";
 import bcrypt from "bcrypt";
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
+import prisma from "../prisma";
 import envVars from "../config";
-
-const prisma = new PrismaClient();
 
 const saltRounds = parseInt(envVars.SALT_ROUNDS);
 
