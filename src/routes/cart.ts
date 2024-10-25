@@ -94,18 +94,18 @@ export const cartRouter = (app: Application) => {
     }
   );
 
-  router.post(
-    "/mine/checkout",
-    async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        const { id } = req.user as User;
-        const { cartId, paymentInfo } = req.body;
+  // router.post(
+  //   "/mine/checkout",
+  //   async (req: Request, res: Response, next: NextFunction) => {
+  //     try {
+  //       const { id } = req.user as User;
+  //       const { cartId, paymentInfo } = req.body;
 
-        const response = await CartService.checkout(id, cartId, paymentInfo);
-        res.status(200).send(response);
-      } catch (err) {
-        next(err);
-      }
-    }
-  );
+  //       const response = await CartService.checkout(id, cartId, paymentInfo);
+  //       res.status(200).send(response);
+  //     } catch (err) {
+  //       next(err);
+  //     }
+  //   }
+  // );
 };

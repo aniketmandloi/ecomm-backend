@@ -1,12 +1,12 @@
 import prisma from "../prisma";
-import { Cart, CartItem } from "@prisma/client";
+import { Cart, CartItem, Order } from "@prisma/client";
 import { get } from "http";
 import createError from "http-errors";
-import Stripe from 'stripe';
+import Stripe from "stripe";
+import envVars from "../config";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2022-11-15',
-});
+// Init Stripe with secret key
+// const stripe = new Stripe(envVars.STRIPE_SECRET_KEY);
 
 export const CartService = {
   async create(userId: number): Promise<Cart> {
@@ -107,15 +107,67 @@ export const CartService = {
     }
   },
 
-  async checkout(cartId: number, userId: number, paymentInfo: any) {
-    try {
-      const stripe = 
+  // async checkout(
+  //   cartId: number,
+  //   userId: number,
+  //   paymentInfo: any
+  // ): Promise<any> {
+  //   try {
+  //     // Load cart items
+  //     const cartItems = await prisma.cartItem.findMany({
+  //       where: { cartId },
+  //       include: {
+  //         product: true,
+  //       },
+  //     });
 
-      const cartItems = await prisma.cartItem.findMany({
-        where: {cartId}
-      });
+  //     if (cartItems.length === 0) throw createError(400, "Cart is empty");
 
-      if ()
-    }
-  }
+  //     // Generate total price from cart items
+  //     const total = cartItems.reduce(
+  //       (total, item) => total + Number(item.product.price) * item.qty,
+  //       0
+  //     );
+
+  //     // Generate initial order
+  //     const order = await prisma.order.create({
+  //       data: {
+  //         total,
+  //         userId: userId,
+  //         status: "PENDING",
+  //         items: {
+  //           create: cartItems.map((item) => ({
+  //             productId: item.productId,
+  //             qty: item.qty,
+  //             price: Number(item.product.price),
+  //             name: item.product.name,
+  //             description: item.product.description,
+  //           })),
+  //         },
+  //       },
+  //     });
+
+  //     // Make charge to Payment method
+  //     await stripe.charges.create({
+  //       amount: total,
+  //       currency: "usd",
+  //       source: paymentInfo.id,
+  //       description: `Order Completion Payment ${order.id}`,
+  //     });
+
+  //     // On success update order status
+  //     const completedOrder = await prisma.order.update({
+  //       where: {
+  //         id: order.id,
+  //       },
+  //       data: {
+  //         status: "COMPLETED",
+  //       },
+  //     });
+
+  //     return completedOrder;
+  //   } catch (err: any) {
+  //     throw createError(500, err.message);
+  //   }
+  // },
 };
