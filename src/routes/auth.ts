@@ -37,4 +37,31 @@ export const authRouter = (app: Express, passport: PassportStatic) => {
       }
     }
   );
+
+  // Google Login Endpoint
+  router.get(
+    "/google",
+    passport.authenticate("google", { scope: ["profile"] })
+  );
+
+  // Google Login Callback Endpoint
+  router.get(
+    "/google/callback",
+    passport.authenticate("google", { failureRedirect: "/login" }),
+    async (req: Request, res: Response): Promise<void> => {
+      res.redirect("/");
+    }
+  );
+
+  // Facebook Login Endpoint
+  router.get("/facebook", passport.authenticate("facebook"));
+
+  // Facebook Login Callback Endpoint
+  router.get(
+    "/facebook/callback",
+    passport.authenticate("facebook", { failureRedirect: "/login" }),
+    async (req: Request, res: Response): Promise<void> => {
+      res.redirect("/");
+    }
+  );
 };

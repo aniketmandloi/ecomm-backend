@@ -15,8 +15,8 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
-  email     String  @unique @db.VarChar(50)
-  password  String
+  email     String?  @unique @db.VarChar(50)
+  password  String?
   firstName String?  @db.VarChar(50)
   lastName  String?  @db.VarChar(50)
   google    Json?

@@ -50,10 +50,72 @@ export const AuthService = {
         throw createError(401, "Incorrect username or password!");
       }
 
+      if (!user.password) {
+        throw createError(401, "Incorrect username or password!");
+      }
+
       // Use bcrypt to compare password
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
         throw createError(401, "Incorrect username or password!");
+      }
+
+      return user;
+    } catch (err: any) {
+      throw createError(500, err.message);
+    }
+  },
+
+  async googleLogin(profile: {
+    id: string;
+    displayName: string;
+  }): Promise<User | null> {
+    const { id, displayName } = profile;
+    try {
+      const user = await prisma.user.findFirst({
+        where: {
+          google: {
+            path: ["id"],
+            equals: id,
+          },
+        },
+      });
+
+      if (!user) {
+        return await prisma.user.create({
+          data: {
+            google: { id, displayName },
+          },
+        });
+      }
+
+      return user;
+    } catch (err: any) {
+      throw createError(500, err.message);
+    }
+  },
+
+  async facebookLogin(profile: {
+    id: string;
+    displayName: string;
+  }): Promise<User | null> {
+    const { id, displayName } = profile;
+    try {
+      const user = await prisma.user.findFirst({
+        where: {
+          facebook: {
+            path: ["id"],
+            equals: id,
+          },
+        },
+      });
+
+      if (!user) {
+        return await prisma.user.create({
+          data: {
+            facebook: { id, displayName },
+          },
+        });
       }
 
       return user;
