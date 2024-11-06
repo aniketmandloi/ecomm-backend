@@ -1,6 +1,9 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import { PassportStatic } from "passport";
 import { AuthService } from "../services/AuthService";
+import { User } from "@prisma/client";
+import { CartService } from "../services/CartService";
+import { UserService } from "../services/UserService";
 
 const router = express.Router();
 
@@ -62,6 +65,26 @@ export const authRouter = (app: Express, passport: PassportStatic) => {
     passport.authenticate("facebook", { failureRedirect: "/login" }),
     async (req: Request, res: Response): Promise<void> => {
       res.redirect("/");
+    }
+  );
+
+  router.get(
+    "/logged_in",
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const { id } = req.user as User;
+
+        const cart = await CartService.loadCart(id);
+        const user = await UserService.getUserById(id);
+
+        res.status(200).send({
+          user,
+          loggedIn: true,
+          cart,
+        });
+      } catch (err) {
+        next(err);
+      }
     }
   );
 };

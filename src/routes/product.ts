@@ -8,9 +8,9 @@ export const productRouter = (app: Application) => {
 
   router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const queryParamss = req.query;
+      const queryParams = req.query;
 
-      const response = await ProductService.list(queryParamss);
+      const response = await ProductService.list(queryParams);
       res.status(200).send(response);
     } catch (err) {
       next(err);
