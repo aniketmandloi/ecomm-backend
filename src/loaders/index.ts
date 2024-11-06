@@ -2,7 +2,13 @@ import passport from "passport";
 import { routeLoader } from "../routes";
 import { expressLoader } from "./express";
 import { passportLoader } from "./passport";
-import { Express } from "express";
+import {
+  Express,
+  Request,
+  Response,
+  NextFunction,
+  ErrorRequestHandler,
+} from "express";
 
 export const loaders = async (app: Express) => {
   // Load express middleware
@@ -15,9 +21,21 @@ export const loaders = async (app: Express) => {
   await routeLoader(app, passport);
 
   // Error Handler
-  app.use((err: any, req: any, res: any, next: any) => {
+  // Error Handler
+  const errorHandler: ErrorRequestHandler = (
+    err: any,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { message, status } = err;
 
-    return res.status(status).send({ message });
-  });
+    // Set a default status if undefined
+    const statusCode = status || 500;
+
+    console.error("Error:", message); // Log error message for debugging
+    res.status(statusCode).send({ message });
+  };
+
+  app.use(errorHandler);
 };

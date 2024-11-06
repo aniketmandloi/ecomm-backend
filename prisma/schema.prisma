@@ -28,8 +28,8 @@ model User {
 model Product {
   id          Int      @id @default(autoincrement())
   name        String   @db.VarChar(50)
-  price       BigInt
-  description String   @db.VarChar(50)
+  price       Int
+  description String   @db.VarChar(255)
   cartItems   CartItem[]
   orderItems  OrderItem[]
 }

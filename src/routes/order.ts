@@ -7,16 +7,16 @@ const router = express.Router();
 export const orderRouter = (app: Application) => {
   app.use("/api/order", router);
 
-  router.get("/", async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { id } = req.user as User;
+  // router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+  //   try {
+  //     const { id } = req.user as User;
 
-      const response = await OrderService.list(id);
-      res.status(200).send(response);
-    } catch (err) {
-      next(err);
-    }
-  });
+  //     const response = await OrderService.list(id);
+  //     res.status(200).send(response);
+  //   } catch (err) {
+  //     next(err);
+  //   }
+  // });
 
   router.get(
     "/orderId",
