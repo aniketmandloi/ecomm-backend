@@ -30,6 +30,14 @@ export const CartService = {
           items: true,
         },
       });
+
+      if (!cart) {
+        await prisma.cart.create({
+          data: {
+            userId,
+          },
+        });
+      }
       return cart;
     } catch (err: any) {
       throw createError(500, err.message);

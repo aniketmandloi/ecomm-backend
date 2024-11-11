@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { User } from "@prisma/client";
 import prisma from "../prisma";
 import envVars from "../config";
+import { CartService } from "./CartService";
 
 const saltRounds = parseInt(envVars.SALT_ROUNDS);
 
@@ -24,12 +25,16 @@ export const AuthService = {
       const salt = await bcrypt.genSalt(saltRounds);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      return await prisma.user.create({
+      const createdUser = await prisma.user.create({
         data: {
           email,
           password: hashedPassword,
         },
       });
+
+      await CartService.create(createdUser.id);
+
+      return createdUser;
     } catch (err: any) {
       throw createError(500, err.message);
     }
