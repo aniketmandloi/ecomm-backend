@@ -12,7 +12,7 @@ export const CartService = {
   async create(userId: number): Promise<Cart> {
     try {
       const cart = await prisma.cart.create({
-        data: { userId },
+        data: { userId, items: { create: [] } },
       });
       return cart;
     } catch (err: any) {
@@ -35,6 +35,9 @@ export const CartService = {
         await prisma.cart.create({
           data: {
             userId,
+            items: {
+              create: [],
+            },
           },
         });
       }
@@ -65,14 +68,18 @@ export const CartService = {
     item: Omit<CartItem, "cartId">
   ): Promise<CartItem> {
     try {
-      const cart = await prisma.cart.findUnique({
+      let cart = await prisma.cart.findUnique({
         where: {
           id: userId,
         },
       });
 
       if (!cart) {
-        throw createError(404, "Cart not found");
+        cart = await prisma.cart.create({
+          data: {
+            userId: userId,
+          },
+        });
       }
 
       const cartItem = await prisma.cartItem.create({

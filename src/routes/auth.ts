@@ -32,7 +32,6 @@ export const authRouter = (app: Express, passport: PassportStatic) => {
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { username, password } = req.body;
-        // console.log(username);
         const response = await AuthService.login({ email: username, password });
         res.status(200).send(response);
       } catch (err) {
@@ -40,6 +39,7 @@ export const authRouter = (app: Express, passport: PassportStatic) => {
       }
     }
   );
+  [];
 
   // Google Login Endpoint
   router.get(

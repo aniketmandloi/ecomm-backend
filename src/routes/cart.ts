@@ -1,10 +1,11 @@
 import express, { Application, NextFunction, Response, Request } from "express";
 import { CartService } from "../services/CartService";
 import { User } from "@prisma/client";
+import passport from "passport";
 
 const router = express.Router();
 
-export const cartRouter = (app: Application) => {
+export const cartRouter = (app: Application, passport: any) => {
   app.use("/api/carts", router);
 
   router.get(
@@ -52,6 +53,8 @@ export const cartRouter = (app: Application) => {
     "/mine/items",
     async (req: Request, res: Response, next: NextFunction) => {
       try {
+        console.log("Request Body:", req.body); // Log incoming request body
+        console.log("Authenticated User:", req.user);
         const { id } = req.user as User;
         const data = req.body;
 

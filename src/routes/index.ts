@@ -6,10 +6,10 @@ import { userRoute } from "./user";
 import { cartRouter } from "./cart";
 import { orderRouter } from "./order";
 
-export const routeLoader = (app: Express, passport: PassportStatic) => {
+export const routeLoader = (app: Express, passport: any) => {
   authRouter(app, passport);
   productRouter(app);
   userRoute(app);
-  cartRouter(app);
+  cartRouter(app, passport);
   orderRouter(app);
 };
